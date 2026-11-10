@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>blog card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Noto+Serif+KR:wght@700;900&display=block" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#fff}
+*{box-sizing:border-box}
+#card{width:1000px;height:1000px;overflow:hidden;position:relative;font-family:'Noto Sans KR','Noto Sans CJK KR',sans-serif;word-break:keep-all}
+#status{position:absolute;top:1100px;left:0;font:16px monospace;white-space:pre}
+.abs{position:absolute}
+.fit{overflow:hidden}
+/* ---------- 생활가이드 ---------- */
+.g{background:#FAF6EE;width:1000px;height:1000px;position:relative;color:#2B2B2B}
+.g .head{background:#1E5A57;padding:62px 70px 0;height:330px}
+.g .badge{display:inline-block;background:#F4C24D;color:#1E5A57;font-weight:900;font-size:28px;line-height:1.4;padding:8px 24px;border-radius:30px;max-width:860px;white-space:nowrap;overflow:hidden}
+.g .title{color:#FAF6EE;font-weight:900;font-size:72px;line-height:1.18;letter-spacing:-2px;margin-top:20px;height:190px}
+.g .foot{position:absolute;bottom:34px;left:0;right:0;text-align:center;font-weight:700;font-size:24px;color:#1E5A57;display:flex;justify-content:center;align-items:center;gap:8px}
+.g .body{position:absolute;left:70px;right:70px;top:366px;bottom:96px;display:flex;flex-direction:column;gap:22px}
+.g .box{background:#fff;border:4px solid #1E5A57;border-radius:26px;display:flex;align-items:center;gap:24px;padding:0 30px;flex:1;min-height:0}
+.g .num{flex:none;width:62px;height:62px;border-radius:50%;background:#F4C24D;color:#1E5A57;font-weight:900;font-size:34px;display:flex;align-items:center;justify-content:center}
+.g .txt{font-weight:800;font-size:36px;line-height:1.3;color:#1E2E2D;flex:1;max-height:100%}
+.g .sub{font-weight:700;font-size:26px;color:#4A4A4A;margin-top:6px}
+.g table{border-collapse:separate;border-spacing:0;width:100%;height:100%;background:#fff;border:4px solid #1E5A57;border-radius:26px;overflow:hidden;table-layout:fixed}
+.g th{background:#1E5A57;color:#FAF6EE;font-weight:900;font-size:28px;padding:14px 12px}
+.g td{font-weight:700;font-size:27px;padding:10px 12px;text-align:center;border-top:2px solid #DCEBE8;line-height:1.25}
+.g td:first-child{font-weight:900;color:#1E5A57}
+.g tr:nth-child(even) td{background:#F3F8F7}
+.g .tdin{max-height:100%;overflow:hidden}
+.g .tag{background:#F4C24D;color:#1E5A57;border-radius:22px;padding:18px 28px;font-weight:900;font-size:32px;line-height:1.3;flex:none}
+.g .lab{flex:none;width:150px;font-weight:900;font-size:30px;color:#1E5A57}
+.g .val{font-weight:700;font-size:30px;line-height:1.3;flex:1}
+.g .ck{flex:none;width:52px;height:52px;border:4px solid #1E5A57;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center}
+.g .tiles{display:flex;gap:22px;flex:1}
+.g .tile{flex:1;min-width:0;background:#fff;border:4px solid #1E5A57;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;gap:14px}
+.g .big{font-weight:900;color:#1E5A57;font-size:72px;line-height:1.3;letter-spacing:-2px;white-space:nowrap;width:100%}
+.g .tl{font-weight:800;font-size:28px;line-height:1.3;width:100%;max-height:120px}
+.g .note{background:#F4C24D33;border-radius:20px;padding:18px 26px;font-weight:700;font-size:26px;line-height:1.35;flex:none}
+.g .tlrow{display:flex;align-items:center;gap:26px;flex:1;min-height:0;position:relative}
+.g .date{flex:none;width:220px;background:#1E5A57;color:#FAF6EE;border-radius:22px;padding:14px 10px;text-align:center;font-weight:900;font-size:30px;position:relative;z-index:1}
+.g .line{position:absolute;left:110px;top:30px;bottom:30px;width:6px;background:#F4C24D;border-radius:3px}
+.g.cover{background:#1E5A57}
+.g.cover .ctitle{position:absolute;left:70px;right:70px;top:160px;height:330px;color:#FAF6EE;font-weight:900;font-size:96px;line-height:1.14;letter-spacing:-3px}
+.g.cover .csub{position:absolute;left:70px;right:420px;top:520px;height:180px;color:#CFE3DF;font-weight:700;font-size:34px;line-height:1.4}
+.g.cover .cicon{position:absolute;right:70px;bottom:120px;width:330px;height:330px;border-radius:50%;background:#F4C24D;display:flex;align-items:center;justify-content:center}
+.g.cover .foot{color:#F4C24D}
+/* ---------- 윤슬 ---------- */
+.y{width:1000px;height:1000px;position:relative}
+.y svg{position:absolute;left:0;top:0}
+</style></head>
+<body><div id="card"></div><div id="status">STATUS_LOADING</div>
+<script>
+'use strict';
+const SANS = "'Noto Sans KR','Noto Sans CJK KR',sans-serif";
+const SERIF = "'Noto Serif KR','Noto Serif CJK KR',serif";
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const br = s => esc(s).replace(/\s*\|\s*/g,'<br>').replace(/\n/g,'<br>');
+const arr = (a, n) => (Array.isArray(a) ? a : []).slice(0, n);
+
+/* ================= 생활가이드 아이콘 (24 그리드) ================= */
+const GI = {
+  pin:'<path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" fill="#F4C24D"/><circle cx="12" cy="10" r="2.6"/>',
+  clock:'<circle cx="12" cy="12" r="9" fill="#F4C24D"/><path d="M12 7v5l3 2"/>',
+  park:'<rect x="4" y="3" width="16" height="18" rx="3" fill="#F4C24D"/><path d="M10 17V7h3a3 3 0 0 1 0 6h-3"/>',
+  tag:'<path d="M3 12V4h8l10 10-8 8z" fill="#F4C24D"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+  phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z" fill="#F4C24D"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2" fill="#F4C24D"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 15l2.5 2.5L16 13"/>',
+  coin:'<circle cx="12" cy="12" r="9" fill="#F4C24D"/><path d="M9 9l1.5 6L12 10l1.5 5L15 9M8 12h8"/>',
+  car:'<path d="M3 16v-4l2-5h14l2 5v4z" fill="#F4C24D"/><path d="M3 12h18"/><circle cx="7.5" cy="16.5" r="2"/><circle cx="16.5" cy="16.5" r="2"/>',
+  cup:'<path d="M4 8h13v6a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z" fill="#F4C24D"/><path d="M17 10h2a2 2 0 0 1 0 4h-2M8 3v2M12 3v2"/>',
+  food:'<path d="M3 12h18a9 9 0 0 1-18 0z" fill="#F4C24D"/><path d="M7 8c0-2 2-2 2-4M12 8c0-2 2-2 2-4M2 21h20"/>',
+  book:'<path d="M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z" fill="#F4C24D"/><path d="M20 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/>',
+  gym:'<path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/><rect x="5" y="7" width="2" height="10" fill="#F4C24D"/><rect x="17" y="7" width="2" height="10" fill="#F4C24D"/>',
+  game:'<rect x="2" y="7" width="20" height="11" rx="5" fill="#F4C24D"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/>',
+  ball:'<circle cx="12" cy="12" r="9" fill="#F4C24D"/><circle cx="10" cy="9" r="1"/><circle cx="14" cy="9" r="1"/><circle cx="12" cy="12" r="1"/>',
+  scissors:'<circle cx="6" cy="6" r="3" fill="#F4C24D"/><circle cx="6" cy="18" r="3" fill="#F4C24D"/><path d="M8.5 7.5L20 18M8.5 16.5L20 6"/>',
+  shirt:'<path d="M8 3l-5 3 2 5 3-1v11h8V10l3 1 2-5-5-3a4 4 0 0 1-8 0z" fill="#F4C24D"/>',
+  home:'<path d="M3 11l9-8 9 8v10H3z" fill="#F4C24D"/><path d="M9 21v-6h6v6"/>',
+  bus:'<rect x="4" y="3" width="16" height="15" rx="3" fill="#F4C24D"/><path d="M4 11h16M8 21v-3M16 21v-3"/><circle cx="8" cy="14.5" r="1"/><circle cx="16" cy="14.5" r="1"/>',
+  snow:'<path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/><circle cx="12" cy="12" r="3" fill="#F4C24D"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2" fill="#F4C24D"/><path d="M2 10h20M6 15h4"/>',
+  store:'<path d="M3 9l2-5h14l2 5z" fill="#F4C24D"/><path d="M4 9v11h16V9M9 20v-6h6v6"/>',
+  kid:'<circle cx="12" cy="7" r="4" fill="#F4C24D"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
+  info:'<circle cx="12" cy="12" r="9" fill="#F4C24D"/><path d="M12 11v6M12 7.5v.5"/>',
+  check:'<path d="M5 12l5 5L20 7"/>',
+  star:'<path d="M12 3l2.8 5.8 6.2.9-4.5 4.4 1 6.3L12 17.5 6.5 20.4l1-6.3L3 9.7l6.2-.9z" fill="#F4C24D"/>',
+  leaf:'<path d="M5 19C5 9 11 4 20 4c0 9-5 15-15 15z" fill="#F4C24D"/><path d="M5 19l8-8"/>',
+};
+const gicon = (name, size, stroke='#1E5A57', sw=2) =>
+  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${GI[name] || GI.info}</svg>`;
+const labelIcon = l => /위치|주소|장소/.test(l) ? 'pin' : /시간|영업|운영/.test(l) ? 'clock' : /주차/.test(l) ? 'park'
+  : /가격|요금|비용|금액/.test(l) ? 'tag' : /전화|문의|연락/.test(l) ? 'phone' : /예약|일정|날짜/.test(l) ? 'cal' : 'info';
+const gfoot = (c) => `<div class="foot" ${c?`style="color:${c}"`:''}>${gicon('pin',28,c||'#1E5A57',2.2)}동탄수원 생활가이드</div>`;
+const ghead = s => `<div class="head"><div class="badge fit">${esc(s.badge||'동탄수원 생활가이드')}</div><div class="title fit" data-min="44"><span>${br(s.title)}</span></div></div>`;
+
+const G = {
+  cover(s){ return `<div class="g cover"><div class="abs" style="left:70px;top:70px"><span class="badge" style="display:inline-block;background:#F4C24D;color:#1E5A57;font-weight:900;font-size:30px;padding:8px 26px;border-radius:30px">${esc(s.badge||'동탄수원 생활가이드')}</span></div>
+    <div class="ctitle fit" data-min="56">${br(s.title)}</div><div class="csub fit" data-min="24">${br(s.sub||'')}</div>
+    <div class="cicon">${gicon(s.icon||'pin',200,'#1E5A57',1.6)}</div>${gfoot('#F4C24D')}</div>`; },
+  summary(s){ const L = arr(s.lines,4); return `<div class="g">${ghead(s)}<div class="body">${L.map((t,i)=>`<div class="box"><div class="num">${i+1}</div><div class="txt fit" data-min="24">${br(t)}</div></div>`).join('')}</div>${gfoot()}</div>`; },
+  check(s){ const L = arr(s.items,6); return `<div class="g">${ghead(s)}<div class="body" style="gap:${L.length>4?16:22}px">${L.map(t=>`<div class="box"><div class="ck">${gicon('check',40,'#F4C24D',3.4)}</div><div class="txt fit" data-min="22">${br(t)}</div></div>`).join('')}</div>${gfoot()}</div>`; },
+  table(s){ const C = arr(s.cols,4), R = arr(s.rows,6); const w = C.length? (C.length===2?[40,60]:C.length===3?[30,35,35]:[25,25,25,25]):[];
+    return `<div class="g">${ghead(s)}<div class="body"><table><colgroup>${w.map(x=>`<col style="width:${x}%">`).join('')}</colgroup><thead><tr>${C.map(c=>`<th><div class="fit tdin" data-min="18">${br(c)}</div></th>`).join('')}</tr></thead><tbody>${R.map(r=>`<tr>${C.map((_,j)=>`<td><div class="fit tdin" data-min="17">${br((r||[])[j]??'')}</div></td>`).join('')}</tr>`).join('')}</tbody></table></div>${gfoot()}</div>`; },
+  store(s){ const I = arr(s.info,5); return `<div class="g">${ghead({badge:s.badge||'매장 정보',title:s.name})}<div class="body" style="gap:16px">${s.tag?`<div class="tag fit" data-min="22">${br(s.tag)}</div>`:''}${I.map(p=>`<div class="box" style="gap:18px">${gicon(labelIcon(p[0]||''),54,'#1E5A57',2)}<div class="lab fit" data-min="20">${esc(p[0])}</div><div class="val fit" data-min="20">${br(p[1])}</div></div>`).join('')}</div>${gfoot()}</div>`; },
+  numbers(s){ const N = arr(s.nums,3); return `<div class="g">${ghead(s)}<div class="body"><div class="tiles">${N.map(n=>`<div class="tile">${n[2]?gicon(n[2],84,'#1E5A57',1.8):''}<div class="big fit" data-min="34">${esc(n[0])}</div><div class="tl fit" data-min="20">${br(n[1])}</div></div>`).join('')}</div>${s.note?`<div class="note fit" data-min="20">${br(s.note)}</div>`:''}</div>${gfoot()}</div>`; },
+  schedule(s){ const S = arr(s.steps,5); return `<div class="g">${ghead(s)}<div class="body" style="gap:14px"><div class="line"></div>${S.map(p=>`<div class="tlrow"><div class="date fit" data-min="20">${br(p[0])}</div><div class="txt fit" data-min="22" style="font-size:32px">${br(p[1])}</div></div>`).join('')}</div>${gfoot()}</div>`; },
+};
+
+/* ================= 윤슬 ================= */
+const YT = {
+  sage:   {b1:'#DDE8DA', b2:'#CBDCC6', ink:'#2F4A3A', acc:'#7FA68C', chip:'#E4EEE0', sh:'#A9C2A3'},
+  ivory:  {b1:'#F6F0E6', b2:'#EADFCB', ink:'#5A4636', acc:'#B58E6A', chip:'#F3EADB', sh:'#D6C4A6'},
+  navy:   {b1:'#E7ECF3', b2:'#D6DEEA', ink:'#22324A', acc:'#6F87A8', chip:'#E3E9F2', sh:'#B5C3D6'},
+  apricot:{b1:'#FBE9DF', b2:'#F6D6C6', ink:'#7A3E2E', acc:'#E39A7E', chip:'#FBE4D8', sh:'#EBBBA6'},
+};
+const YRED = '#D0604F', YSKIN = '#F6E3D3';
+const yperson = (cx, top, sc, T, opt={}) => { // 정면 증명사진 인물. top = 정수리 y, sc = 1이면 얼굴 높이 238
+  const g = (x,y)=>`${cx+x*sc},${top+y*sc}`; const f = n => n*sc; const tilt = opt.tilt||0;
+  return `<g transform="rotate(${tilt} ${cx} ${top+f(150)})">
+  <path d="M${g(-108,330)} C${g(-108,270)} ${g(-68,250)} ${g(0,250)} C${g(68,250)} ${g(108,270)} ${g(108,330)} Z" fill="${T.acc}" stroke="${T.ink}" stroke-width="${f(5)}"/>
+  <path d="M${g(-32,252)} L${g(0,286)} L${g(32,252)}" fill="#fff" stroke="${T.ink}" stroke-width="${f(4.5)}" stroke-linejoin="round"/>
+  <rect x="${cx-f(18)}" y="${top+f(218)}" width="${f(36)}" height="${f(40)}" fill="${YSKIN}" stroke="${T.ink}" stroke-width="${f(4.5)}"/>
+  <ellipse cx="${cx-f(92)}" cy="${top+f(126)}" rx="${f(15)}" ry="${f(21)}" fill="${YSKIN}" stroke="${T.ink}" stroke-width="${f(4.5)}"/>
+  <ellipse cx="${cx+f(92)}" cy="${top+f(126)}" rx="${f(15)}" ry="${f(21)}" fill="${YSKIN}" stroke="${T.ink}" stroke-width="${f(4.5)}"/>
+  <ellipse cx="${cx}" cy="${top+f(122)}" rx="${f(92)}" ry="${f(116)}" fill="${YSKIN}" stroke="${T.ink}" stroke-width="${f(5)}"/>
+  <path d="M${g(-94,108)} C${g(-104,32)} ${g(-60,0)} ${g(0,0)} C${g(66,0)} ${g(106,36)} ${g(94,108)} C${g(88,74)} ${g(66,56)} ${g(32,54)} C${g(16,70)} ${g(-30,74)} ${g(-60,62)} C${g(-76,74)} ${g(-88,88)} ${g(-94,108)} Z" fill="#3B3B3B"/>
+  <path d="M${g(-48,100)} Q${g(-33,94)} ${g(-18,100)} M${g(18,100)} Q${g(33,94)} ${g(48,100)}" fill="none" stroke="${T.ink}" stroke-width="${f(4)}" stroke-linecap="round"/>
+  <ellipse cx="${cx-f(33)}" cy="${top+f(126)}" rx="${f(7)}" ry="${f(8)}" fill="${T.ink}"/><ellipse cx="${cx+f(33)}" cy="${top+f(126)}" rx="${f(7)}" ry="${f(8)}" fill="${T.ink}"/>
+  <circle cx="${cx-f(30.5)}" cy="${top+f(123)}" r="${f(2.2)}" fill="#fff"/><circle cx="${cx+f(35.5)}" cy="${top+f(123)}" r="${f(2.2)}" fill="#fff"/>
+  <ellipse cx="${cx-f(58)}" cy="${top+f(162)}" rx="${f(14)}" ry="${f(8)}" fill="#F2B9A8" opacity=".7"/><ellipse cx="${cx+f(58)}" cy="${top+f(162)}" rx="${f(14)}" ry="${f(8)}" fill="#F2B9A8" opacity=".7"/>
+  ${opt.smile===false ? `<path d="M${g(-10,184)} L${g(10,184)}" stroke="${T.ink}" stroke-width="${f(4.5)}" stroke-linecap="round"/>`
+     : `<path d="M${g(-12,182)} Q${g(0,188)} ${g(12,182)}" fill="none" stroke="${T.ink}" stroke-width="${f(4.5)}" stroke-linecap="round"/>`}
+  </g>`; };
+const ybg = T => `<rect width="1000" height="1000" fill="${T.b1}"/><path d="M1000 0 L1000 1000 L0 1000 Z" fill="${T.b2}"/>`;
+const yhead = (s,T,titleY=196) => `<rect x="${500-Math.max(120, (s.badge||'증명사진 가이드').length*13+40)}" y="58" width="${2*Math.max(120,(s.badge||'증명사진 가이드').length*13+40)}" height="48" rx="24" fill="${T.ink}"/>
+  <text x="500" y="91" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="23" fill="${T.b1}" letter-spacing="1">${esc(s.badge||'증명사진 가이드')}</text>
+  <text class="sfit" data-max="880" x="500" y="${titleY}" text-anchor="middle" font-family="${SANS}" font-weight="900" font-size="76" fill="${T.ink}" letter-spacing="-2">${esc(s.title)}</text>`;
+const yfoot = T => `<text x="500" y="962" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="24" fill="${T.ink}">사진관, 윤슬</text>`;
+const YI = { // 칩 아이콘 (중심 0,0)
+  bg:'<rect x="-12" y="-14" width="24" height="28" rx="3" fill="#fff"/><circle cx="0" cy="-3" r="5"/><path d="M-8 14 C-8 6 8 6 8 14"/>',
+  cal:'<rect x="-13" y="-11" width="26" height="24" rx="4"/><path d="M-13 -3 H13 M-6 -15 V-8 M6 -15 V-8"/><path d="M-5 5 l3 3 6 -7"/>',
+  face:'<circle cx="0" cy="0" r="13"/><circle cx="-4.5" cy="-2" r="1.2" fill="currentColor"/><circle cx="4.5" cy="-2" r="1.2" fill="currentColor"/><path d="M-5 6 H5"/>',
+  clock:'<circle cx="0" cy="0" r="13"/><path d="M0 -7 V0 L5 4"/>',
+  shirt:'<path d="M-6 -12 L-14 -7 L-11 0 L-7 -2 V13 H7 V-2 L11 0 L14 -7 L6 -12 A6 6 0 0 1 -6 -12 Z"/>',
+  glasses:'<circle cx="-7" cy="0" r="6"/><circle cx="7" cy="0" r="6"/><path d="M-1 0 H1 M-13 -2 L-16 -5 M13 -2 L16 -5"/>',
+  hair:'<path d="M-12 8 C-14 -10 14 -10 12 8"/><path d="M-6 -6 C-2 0 2 0 6 -6"/>',
+  file:'<path d="M-9 -13 H4 L10 -7 V13 H-9 Z"/><path d="M-4 -2 H5 M-4 4 H5"/>',
+  check:'<path d="M-8 0 L-2 6 L9 -6"/>',
+};
+const ychip = (x, y, w, s, T) => { const ic = s.icon || (/배경|흰/.test(s.t)?'bg':/개월|이내|기간|날짜/.test(s.t)?'cal':/정면|표정|입/.test(s.t)?'face':/옷|복장|의상/.test(s.t)?'shirt':/안경/.test(s.t)?'glasses':/머리|귀|눈썹/.test(s.t)?'hair':/분|시간/.test(s.t)?'clock':/서류|제출|원서/.test(s.t)?'file':'check');
+  return `<g transform="translate(${x},${y})"><rect x="0" y="4" width="${w}" height="92" rx="46" fill="${T.sh}"/><rect x="0" y="0" width="${w}" height="92" rx="46" fill="#fff"/>
+  <circle cx="48" cy="46" r="28" fill="${T.chip}"/><g transform="translate(48,46)" fill="none" stroke="${T.ink}" color="${T.ink}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">${YI[ic]||YI.check}</g>
+  <text class="sfit" data-max="${w-108}" x="88" y="56" font-family="${SANS}" font-weight="800" font-size="27" fill="${T.ink}">${esc(s.t)}</text></g>`; };
+const ychips = (list, y, T) => { const L = arr(list,3).map(c => typeof c === 'string' ? {t:c} : c); const n = L.length; if(!n) return '';
+  const gap = 25, w = Math.floor((880 - gap*(n-1))/n); return L.map((c,i)=>ychip(60+i*(w+gap), y, w, c, T)).join(''); };
+const yframe = (x,y,w,h,T,inner,id) => `<rect x="${x+8}" y="${y+10}" width="${w}" height="${h}" rx="12" fill="${T.sh}" opacity=".8"/>
+  <clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12"/></clipPath>
+  <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="#fff"/><g clip-path="url(#${id})">${inner}</g>
+  <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="none" stroke="${T.ink}" stroke-width="5"/>`;
+const Y = {
+  spec(s,T){ const w = parseFloat(s.w)||3.5, h = parseFloat(s.h)||4.5; let H = 386, W = H*w/h; if (W > 330) { W = 330; H = W*h/w; }
+    const X = 500 - W/2, Yp = 250, sc = W/300*0.92; const top = Yp + H*0.2, chin = top + 238*sc;
+    const inner = yperson(500, top, sc, T) + (s.face ? `<line x1="${X}" y1="${top}" x2="${X+W}" y2="${top}" stroke="#E0796A" stroke-width="2.5" stroke-dasharray="8 7"/><line x1="${X}" y1="${chin}" x2="${X+W}" y2="${chin}" stroke="#E0796A" stroke-width="2.5" stroke-dasharray="8 7"/>` : '');
+    const face = s.face ? `<line x1="${X-34}" y1="${top}" x2="${X-34}" y2="${chin}" stroke="#E0796A" stroke-width="3"/><path d="M${X-44} ${top}h20M${X-44} ${chin}h20" stroke="#E0796A" stroke-width="3"/>
+      <text x="${X-56}" y="${(top+chin)/2-6}" text-anchor="end" font-family="${SANS}" font-weight="900" font-size="30" fill="${YRED}">${esc(s.faceLabel||'얼굴 길이')}</text>
+      <text x="${X-56}" y="${(top+chin)/2+32}" text-anchor="end" font-family="${SANS}" font-weight="900" font-size="30" fill="${YRED}">${esc(s.face)}</text>` : '';
+    return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}${yframe(X,Yp,W,H,T,inner,'f1')}${face}
+      <line x1="${X}" y1="${Yp+H+44}" x2="${X+W}" y2="${Yp+H+44}" stroke="${T.ink}" stroke-width="3"/><path d="M${X} ${Yp+H+34}v20M${X+W} ${Yp+H+34}v20" stroke="${T.ink}" stroke-width="3"/>
+      <text x="500" y="${Yp+H+92}" text-anchor="middle" font-family="${SANS}" font-weight="900" font-size="36" fill="${T.ink}">${esc(s.w)}cm</text>
+      <line x1="${X+W+44}" y1="${Yp}" x2="${X+W+44}" y2="${Yp+H}" stroke="${T.ink}" stroke-width="3"/><path d="M${X+W+34} ${Yp}h20M${X+W+34} ${Yp+H}h20" stroke="${T.ink}" stroke-width="3"/>
+      <text x="${X+W+70}" y="${Yp+H/2+12}" font-family="${SANS}" font-weight="900" font-size="36" fill="${T.ink}">${esc(s.h)}cm</text>
+      ${ychips(s.chips, 800, T)}${yfoot(T)}</svg>`; },
+  ox(s,T){ const O = arr(s.o,4), Xs = arr(s.x,4);
+    const panel = (x, good, items) => { const col = good ? T.ink : YRED; const fw = 190, fh = 244, fx = x+200-fw/2, fy = 260;
+      const inner = yperson(x+200, fy+fh*0.2, fw/300*0.92, T, {tilt: good?0:-14, smile: good}) + (good?'':`<ellipse cx="${x+235}" cy="${fy+150}" rx="80" ry="110" fill="#555" opacity=".18"/>`);
+      return `<rect x="${x}" y="230" width="400" height="660" rx="28" fill="#fff" opacity=".55"/>
+      ${yframe(fx, fy, fw, fh, T, inner, good?'fo':'fx')}
+      <circle cx="${x+52}" cy="282" r="32" fill="${col}"/>${good?`<circle cx="${x+52}" cy="282" r="16" fill="none" stroke="#fff" stroke-width="6"/>`:`<path d="M${x+39} 269 l26 26 M${x+65} 269 l-26 26" stroke="#fff" stroke-width="6" stroke-linecap="round"/>`}
+      ${items.map((t,i)=>`<g transform="translate(${x+36},${600+i*80})"><circle cx="12" cy="-9" r="8" fill="${col}"/><text class="sfit" data-max="320" x="34" y="0" font-family="${SANS}" font-weight="800" font-size="29" fill="${T.ink}">${esc(t)}</text></g>`).join('')}`; };
+    return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}${panel(80,true,O)}${panel(520,false,Xs)}${yfoot(T)}</svg>`; },
+  size(s,T){ const S = arr(s.sizes,4).map(z=>({w:parseFloat(z[0]),h:parseFloat(z[1]),label:z[2]||`${z[0]}×${z[1]}cm`,use:z[3]||''}));
+    const maxH = Math.max(...S.map(z=>z.h)), sumW = S.reduce((a,z)=>a+z.w,0); const gap = 60;
+    let k = Math.min(380/maxH, (840 - gap*(S.length-1))/sumW); let x = 500 - (sumW*k + gap*(S.length-1))/2; const base = 700;
+    return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}${S.map((z,i)=>{ const W=z.w*k, H=z.h*k, X=x, Yp=base-H; x += W+gap; const sc = W/300*0.92;
+      return yframe(X,Yp,W,H,T,yperson(X+W/2, Yp+H*0.2, sc, T),'sz'+i) + `<text x="${X+W/2}" y="${base+56}" text-anchor="middle" font-family="${SANS}" font-weight="900" font-size="32" fill="${T.ink}">${esc(z.label)}</text>
+      <text class="sfit" data-max="${Math.max(W+gap-10,150)}" x="${X+W/2}" y="${base+98}" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="25" fill="${T.ink}" opacity=".8">${esc(z.use)}</text>`; }).join('')}
+      <text x="500" y="890" text-anchor="middle" font-family="${SANS}" font-weight="500" font-size="22" fill="${T.ink}" opacity=".7">실제 크기 비율대로 그렸어요</text>${yfoot(T)}</svg>`; },
+  check(s,T){ const L = arr(s.items,5); const inner = yperson(240, 300, 0.78, T);
+    return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}${yframe(130,250,220,290,T,inner,'fc')}
+      ${L.map((t,i)=>`<g transform="translate(400,${290+i*104})"><rect x="0" y="-38" width="520" height="80" rx="40" fill="#fff"/><rect x="22" y="-20" width="40" height="40" rx="10" fill="${T.chip}" stroke="${T.ink}" stroke-width="3"/><path d="M30 0 l8 8 l16 -18" fill="none" stroke="${T.ink}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text class="sfit" data-max="420" x="80" y="10" font-family="${SANS}" font-weight="800" font-size="28" fill="${T.ink}">${esc(t)}</text></g>`).join('')}
+      ${s.note?`<text class="sfit" data-max="860" x="500" y="${Math.max(620, 290+L.length*104+40)}" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="26" fill="${T.ink}" opacity=".85">${esc(s.note)}</text>`:''}
+      ${ychips(s.chips, 800, T)}${yfoot(T)}</svg>`; },
+};
+
+/* ================= 아트롤 수채화 ================= */
+const A = {paper:'#FDF8F0', ink:'#5E4637', sub:'#8C7262', pink:'#F3C9BF', sky:'#BFD6E6', yellow:'#F4DCA6', green:'#C6DDB7', apricot:'#F3D9CF',
+  bowl:'#A9C8DD', puree:'#F1C27D', wood:'#D8C1A8', carrot:'#F0A35E', leaf:'#8DBF7E', rose:'#F2AE9E', cream:'#FBF1DC', lilac:'#D9CFE8'};
+const WC_DEFS = `<filter id="wc" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".022" numOctaves="3" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="1.2" result="b"/><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="3" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.45 1.08" result="ga"/><feComposite in="b" in2="ga" operator="in"/></filter>
+<filter id="wcEdge" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".022" numOctaves="3" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G" result="d"/><feMorphology in="d" operator="erode" radius="3" result="er"/><feComposite in="d" in2="er" operator="out" result="edge"/><feGaussianBlur in="edge" stdDeviation="1"/></filter>
+<filter id="paper"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="11"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .35  0 0 0 .09 0"/></filter>`;
+const wc = (shape, color, op=.55, edge=.35) => `<g filter="url(#wc)" opacity="${op}">${shape.replaceAll('{c}',color)}</g><g filter="url(#wcEdge)" opacity="${edge}">${shape.replaceAll('{c}',color)}</g>`;
+const ink = (d, w=2.4) => `<path d="${d}" fill="none" stroke="${A.ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`;
+const dots = (pts, c=A.rose) => wc(pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="${p[2]||8}" fill="{c}"/>`).join(''), c, .8, .2);
+const wash = (c=A.apricot) => wc('<ellipse cx="500" cy="330" rx="330" ry="150" fill="{c}"/>', c, .55, .2);
+/* 그림 라이브러리: 모두 (500,330) 중심, 대략 x 170~830, y 170~480 */
+const HERO = {
+  babyfood: () => wash() + wc('<path d="M330 320 C340 450 660 450 670 320 Z" fill="{c}"/>', A.bowl, .8, .5) + wc('<ellipse cx="500" cy="320" rx="170" ry="34" fill="{c}"/>', A.puree, .85, .45)
+    + ink('M330 320 C340 450 660 450 670 320') + ink('M330 320 C330 300 670 300 670 320 C670 342 330 342 330 320 Z', 2) + ink('M440 440 C460 452 540 452 560 440', 2)
+    + wc('<path d="M640 300 L800 160" stroke="{c}" stroke-width="16" stroke-linecap="round"/>', A.wood, .9, .4) + wc('<ellipse cx="822" cy="140" rx="34" ry="22" fill="{c}" transform="rotate(-42 822 140)"/>', A.wood, .9, .4)
+    + ink('M640 300 L800 160', 2.2) + ink('M800 160 C790 130 830 100 852 118 C872 136 842 176 800 160 Z', 2.2)
+    + wc('<path d="M190 330 L292 250 C306 238 322 254 310 268 Z" fill="{c}"/>', A.carrot, .9, .5) + wc('<path d="M298 252 C300 228 314 220 326 226 C318 236 312 244 306 250 Z M304 258 C326 246 338 254 340 262 C328 262 318 262 308 262 Z" fill="{c}"/>', A.leaf, .9, .4)
+    + ink('M190 330 L292 250 C306 238 322 254 310 268 Z', 2) + ink('M232 300 l-12 -10 M258 280 l-10 -9', 2)
+    + wc('<circle cx="760" cy="350" r="22" fill="{c}"/><circle cx="790" cy="336" r="20" fill="{c}"/><circle cx="782" cy="366" r="18" fill="{c}"/>', '#9CC58A', .85, .45) + wc('<rect x="770" y="372" width="14" height="40" rx="6" fill="{c}"/>', '#B7D3A3', .9, .3)
+    + dots([[250,190,10],[740,230,8],[420,210,6]]),
+  bottle: () => wash(A.apricot) + `<g transform="rotate(-18 500 330)">`
+    + wc('<rect x="430" y="235" width="140" height="215" rx="44" fill="{c}"/>', A.sky, .55, .45) + wc('<path d="M434 330 H566 V410 C566 440 545 450 500 450 C455 450 434 440 434 410 Z" fill="{c}"/>', A.cream, .95, .3)
+    + wc('<rect x="440" y="208" width="120" height="36" rx="12" fill="{c}"/>', A.pink, .9, .45) + wc('<path d="M468 208 C468 170 482 150 500 150 C518 150 532 170 532 208 Z" fill="{c}"/>', A.wood, .9, .45)
+    + ink('M430 279 C430 255 448 235 474 235 H526 C552 235 570 255 570 279 V406 C570 432 550 450 526 450 H474 C450 450 430 432 430 406 Z') + ink('M440 208 H560 V244 H440 Z', 2) + ink('M468 208 C468 170 482 150 500 150 C518 150 532 170 532 208', 2)
+    + ink('M548 290 h14 M548 320 h14 M548 350 h14 M548 380 h14', 2) + `</g>`
+    + wc('<path d="M690 250 C690 270 676 284 666 284 C656 284 642 270 642 250 C642 230 666 206 666 206 C666 206 690 230 690 250 Z" fill="{c}"/>', A.sky, .85, .45)
+    + wc('<path d="M740 330 C740 344 730 352 722 352 C714 352 704 344 704 330 C704 316 722 298 722 298 C722 298 740 316 740 330 Z" fill="{c}"/>', A.sky, .8, .4)
+    + wc('<path d="M300 300 C276 280 280 252 300 252 C310 252 316 260 316 266 C316 260 322 252 332 252 C352 252 356 280 332 300 L316 314 Z" fill="{c}"/>', A.rose, .85, .4)
+    + dots([[250,400,9],[780,420,7]], A.yellow),
+  thermometer: () => wash(A.sky) + `<g transform="rotate(-35 500 330)">`
+    + wc('<rect x="300" y="290" width="400" height="80" rx="40" fill="{c}"/>', '#FFFFFF', .95, .5) + wc('<rect x="300" y="290" width="150" height="80" rx="40" fill="{c}"/>', A.pink, .9, .45)
+    + wc('<rect x="470" y="306" width="130" height="48" rx="10" fill="{c}"/>', A.sky, .9, .45) + wc('<rect x="690" y="318" width="60" height="24" rx="12" fill="{c}"/>', A.wood, .9, .4)
+    + ink('M340 290 H660 C682 290 700 308 700 330 C700 352 682 370 660 370 H340 C318 370 300 352 300 330 C300 308 318 290 340 290 Z') + ink('M470 306 H600 V354 H470 Z', 2) + ink('M700 330 H750', 2.2) + ink('M490 330 h20 M520 330 h20 M550 330 h30', 2.4) + `</g>`
+    + wc('<path d="M690 200 C666 180 670 152 690 152 C700 152 706 160 706 166 C706 160 712 152 722 152 C742 152 746 180 722 200 L706 214 Z" fill="{c}"/>', A.rose, .85, .4)
+    + wc('<path d="M230 260 C230 236 252 222 270 230 C278 210 312 208 320 232 C340 230 352 250 340 266 H240 C232 266 230 262 230 260 Z" fill="{c}"/>', '#FFFFFF', .95, .5) + ink('M240 266 H340 C352 250 340 230 320 232 C312 208 278 210 270 230 C252 222 230 236 230 260', 2)
+    + dots([[780,420,8],[230,420,7]], A.yellow),
+  calendar: () => wash(A.yellow) + wc('<rect x="330" y="200" width="340" height="270" rx="22" fill="{c}"/>', '#FFFFFF', .95, .5) + wc('<rect x="330" y="200" width="340" height="66" rx="22" fill="{c}"/>', A.pink, .9, .45)
+    + ink('M352 200 H648 C660 200 670 210 670 222 V448 C670 460 660 470 648 470 H352 C340 470 330 460 330 448 V222 C330 210 340 200 352 200 Z') + ink('M330 266 H670', 2)
+    + ink('M400 180 V222 M600 180 V222', 4)
+    + [0,1,2,3,4].map(c=>[0,1,2].map(r=>`<circle cx="${380+c*60}" cy="${305+r*55}" r="7" fill="${A.ink}" opacity=".35"/>`).join('')).join('')
+    + wc('<circle cx="560" cy="360" r="30" fill="{c}"/>', A.rose, .8, .5) + ink('M542 360 l12 12 l24 -26', 4)
+    + wc('<path d="M720 260 l10 22 24 3 -18 16 5 24 -21 -12 -21 12 5 -24 -18 -16 24 -3 z" fill="{c}"/>', A.yellow, .95, .5)
+    + dots([[260,250,9],[250,420,7],[760,430,8]], A.sky),
+  moon: () => wc('<ellipse cx="500" cy="330" rx="330" ry="150" fill="{c}"/>', A.lilac, .5, .2)
+    + wc('<path d="M520 190 C440 200 390 270 400 350 C412 430 490 480 570 462 C500 440 462 380 470 310 C478 250 520 210 520 190 Z" fill="{c}"/>', A.yellow, .95, .5)
+    + ink('M520 190 C440 200 390 270 400 350 C412 430 490 480 570 462 C500 440 462 380 470 310 C478 250 520 210 520 190 Z')
+    + wc('<path d="M560 400 C560 376 584 362 604 370 C614 346 654 344 664 372 C688 370 702 392 690 410 H572 C562 410 560 404 560 400 Z" fill="{c}"/>', '#FFFFFF', .95, .5) + ink('M572 410 H690 C702 392 688 370 664 372 C654 344 614 346 604 370 C584 362 560 376 560 400', 2)
+    + [[300,230,1],[650,230,.8],[720,300,.6],[290,380,.7],[620,180,.5]].map(p=>wc(`<path transform="translate(${p[0]},${p[1]}) scale(${p[2]})" d="M0 -22 C4 -6 6 -4 22 0 C6 4 4 6 0 22 C-4 6 -6 4 -22 0 C-6 -4 -4 -6 0 -22 Z" fill="{c}"/>`, A.yellow, .95, .45)).join('')
+    + `<text x="600" y="300" font-family="${SERIF}" font-weight="700" font-size="34" fill="${A.ink}" opacity=".7">z</text><text x="630" y="270" font-family="${SERIF}" font-weight="700" font-size="44" fill="${A.ink}" opacity=".7">z</text>`,
+  onesie: () => wash(A.green) + wc('<path d="M420 200 C440 222 560 222 580 200 L660 240 L630 300 L600 288 V400 C600 420 560 450 532 452 V470 H468 V452 C440 450 400 420 400 400 V288 L370 300 L340 240 Z" fill="{c}"/>', A.pink, .85, .5)
+    + ink('M420 200 C440 222 560 222 580 200 L660 240 L630 300 L600 288 V400 C600 420 560 450 532 452 V470 H468 V452 C440 450 400 420 400 400 V288 L370 300 L340 240 Z')
+    + ink('M460 212 C470 236 530 236 540 212', 2) + `<circle cx="500" cy="300" r="5" fill="${A.ink}" opacity=".6"/><circle cx="500" cy="340" r="5" fill="${A.ink}" opacity=".6"/>`
+    + wc('<path d="M500 372 C484 358 486 340 500 340 C507 340 510 345 510 349 C510 345 513 340 520 340 C534 340 536 358 520 372 L510 380 Z" fill="{c}"/>', A.rose, .8, .3)
+    + wc('<path d="M700 330 V390 C700 410 716 420 736 420 H760 C776 420 780 404 768 396 L740 380 V330 Z" fill="{c}"/>', A.sky, .9, .5) + ink('M700 330 V390 C700 410 716 420 736 420 H760 C776 420 780 404 768 396 L740 380 V330 Z', 2) + ink('M700 345 H740', 2)
+    + wc('<path d="M250 330 V390 C250 410 266 420 286 420 H310 C326 420 330 404 318 396 L290 380 V330 Z" fill="{c}"/>', A.sky, .9, .5) + ink('M250 330 V390 C250 410 266 420 286 420 H310 C326 420 330 404 318 396 L290 380 V330 Z', 2) + ink('M250 345 H290', 2)
+    + dots([[300,230,9],[720,230,8]], A.yellow),
+  stroller: () => wash(A.apricot) + wc('<path d="M380 330 C380 250 430 200 500 196 V330 Z" fill="{c}"/>', A.green, .9, .5)
+    + wc('<path d="M360 330 H640 C640 390 590 420 530 420 H460 C400 420 360 390 360 330 Z" fill="{c}"/>', A.pink, .85, .5)
+    + ink('M380 330 C380 250 430 200 500 196 V330') + ink('M360 330 H640 C640 390 590 420 530 420 H460 C400 420 360 390 360 330 Z') + ink('M640 330 L700 240 H740', 3.4)
+    + wc('<circle cx="420" cy="455" r="30" fill="{c}"/><circle cx="580" cy="455" r="30" fill="{c}"/>', A.sky, .9, .5) + `<circle cx="420" cy="455" r="30" fill="none" stroke="${A.ink}" stroke-width="2.4" opacity=".85"/><circle cx="580" cy="455" r="30" fill="none" stroke="${A.ink}" stroke-width="2.4" opacity=".85"/><circle cx="420" cy="455" r="6" fill="${A.ink}" opacity=".7"/><circle cx="580" cy="455" r="6" fill="${A.ink}" opacity=".7"/>`
+    + ink('M440 420 L425 430 M560 420 L575 430', 2.4)
+    + wc('<path d="M240 260 C216 240 220 212 240 212 C250 212 256 220 256 226 C256 220 262 212 272 212 C292 212 296 240 272 260 L256 274 Z" fill="{c}"/>', A.rose, .85, .4) + dots([[760,330,9],[250,400,7]], A.yellow),
+  bath: () => wash(A.sky) + wc('<path d="M310 330 H690 V370 C690 420 640 450 590 450 H410 C360 450 310 420 310 370 Z" fill="{c}"/>', '#FFFFFF', .95, .5)
+    + wc('<rect x="296" y="316" width="408" height="26" rx="13" fill="{c}"/>', A.sky, .95, .45) + ink('M310 342 V370 C310 420 360 450 410 450 H590 C640 450 690 420 690 370 V342') + ink('M296 316 H704 V342 H296 Z', 2) + ink('M380 450 L370 476 M620 450 L630 476', 3)
+    + [[380,300,30],[430,280,22],[470,300,26],[540,292,20],[600,302,28],[650,286,18],[420,240,14],[570,236,16],[500,250,12]].map(p=>wc(`<circle cx="${p[0]}" cy="${p[1]}" r="${p[2]}" fill="{c}"/>`, '#FFFFFF', .9, .55)).join('')
+    + wc('<path d="M700 250 C700 226 720 212 740 214 C760 216 770 232 766 248 L790 250 C784 262 774 266 764 264 C770 290 750 306 726 306 C700 306 684 290 690 270 C692 260 696 254 700 250 Z" fill="{c}"/>', A.yellow, .95, .5)
+    + ink('M700 250 C700 226 720 212 740 214 C760 216 770 232 766 248 L790 250 C784 262 774 266 764 264 C770 290 750 306 726 306 C700 306 684 290 690 270 C692 260 696 254 700 250 Z', 2) + `<circle cx="744" cy="232" r="3.5" fill="${A.ink}"/>`
+    + dots([[240,250,9],[250,420,7]], A.pink),
+  bandage: () => wash(A.pink) + `<g transform="rotate(-30 500 330)">` + wc('<rect x="330" y="290" width="340" height="90" rx="45" fill="{c}"/>', A.apricot, .95, .5) + wc('<rect x="450" y="300" width="100" height="70" rx="12" fill="{c}"/>', A.cream, .95, .4)
+    + ink('M375 290 H625 C650 290 670 310 670 335 C670 360 650 380 625 380 H375 C350 380 330 360 330 335 C330 310 350 290 375 290 Z') + ink('M450 300 H550 V370 H450 Z', 2) + [[380,320],[400,350],[600,320],[620,350]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${A.ink}" opacity=".45"/>`).join('') + `</g>`
+    + wc('<path d="M690 300 C650 266 656 220 690 220 C706 220 716 232 716 242 C716 232 726 220 742 220 C776 220 782 266 742 300 L716 322 Z" fill="{c}"/>', A.rose, .9, .5) + ink('M690 300 C650 266 656 220 690 220 C706 220 716 232 716 242 C716 232 726 220 742 220 C776 220 782 266 742 300 L716 322 Z', 2)
+    + wc('<path d="M270 400 l8 18 20 2 -15 13 4 20 -17 -10 -17 10 4 -20 -15 -13 20 -2 z" fill="{c}"/>', A.yellow, .95, .5) + dots([[260,240,9],[760,420,8]], A.sky),
+  coin: () => wash(A.yellow) + [0,1,2,3].map(i=>wc(`<ellipse cx="420" cy="${430-i*34}" rx="90" ry="30" fill="{c}"/>`, '#F1C27D', .95, .55)).join('') + [0,1,2,3].map(i=>ink(`M330 ${430-i*34} C330 ${450-i*34} 510 ${450-i*34} 510 ${430-i*34}`, 2)).join('')
+    + ink('M330 328 C330 308 510 308 510 328 C510 348 330 348 330 328 Z', 2)
+    + wc('<rect x="560" y="250" width="200" height="140" rx="16" fill="{c}"/>', A.green, .9, .5) + wc('<path d="M560 266 L660 330 L760 266" fill="none" stroke="{c}" stroke-width="10"/>', '#9CC58A', .8, .2)
+    + ink('M576 250 H744 C753 250 760 257 760 266 V374 C760 383 753 390 744 390 H576 C567 390 560 383 560 374 V266 C560 257 567 250 576 250 Z') + ink('M560 266 L660 330 L760 266', 2)
+    + wc('<path d="M660 330 C646 318 648 304 660 304 C666 304 668 308 668 311 C668 308 670 304 676 304 C688 304 690 318 676 330 L668 336 Z" fill="{c}"/>', A.rose, .9, .3)
+    + dots([[260,250,9],[790,440,8],[300,450,7]], A.pink),
+  camera: () => wash(A.pink) + wc('<rect x="330" y="240" width="340" height="220" rx="30" fill="{c}"/>', A.pink, .9, .5) + wc('<rect x="380" y="208" width="90" height="44" rx="12" fill="{c}"/>', A.wood, .9, .45)
+    + wc('<circle cx="500" cy="352" r="82" fill="{c}"/>', '#FFFFFF', .95, .5) + wc('<circle cx="500" cy="352" r="54" fill="{c}"/>', A.sky, .95, .5)
+    + ink('M360 240 H640 C657 240 670 253 670 270 V430 C670 447 657 460 640 460 H360 C343 460 330 447 330 430 V270 C330 253 343 240 360 240 Z') + ink('M380 240 V214 C380 210 384 208 388 208 H462 C466 208 470 210 470 214 V240', 2)
+    + `<circle cx="500" cy="352" r="82" fill="none" stroke="${A.ink}" stroke-width="2.4" opacity=".85"/><circle cx="500" cy="352" r="54" fill="none" stroke="${A.ink}" stroke-width="2" opacity=".85"/><circle cx="480" cy="332" r="12" fill="#fff" opacity=".9"/>`
+    + wc('<rect x="600" y="262" width="44" height="26" rx="8" fill="{c}"/>', A.yellow, .95, .4)
+    + wc('<path d="M740 230 l10 22 24 3 -18 16 5 24 -21 -12 -21 12 5 -24 -18 -16 24 -3 z" fill="{c}"/>', A.yellow, .95, .5)
+    + wc('<path d="M250 300 C226 280 230 252 250 252 C260 252 266 260 266 266 C266 260 272 252 282 252 C302 252 306 280 282 300 L266 314 Z" fill="{c}"/>', A.rose, .85, .4) + dots([[760,420,8],[260,420,7]], A.sky),
+};
+const heroOf = name => (HERO[name] || HERO.babyfood)();
+const apage = body => `<svg width="1000" height="1000" viewBox="0 0 1000 1000"><defs>${WC_DEFS}</defs><rect width="1000" height="1000" fill="${A.paper}"/>${body}<rect width="1000" height="1000" filter="url(#paper)"/></svg>`;
+const atitle = (s, y=112) => `<text class="sfit" data-max="900" x="500" y="${y}" text-anchor="middle" font-family="${SERIF}" font-weight="700" font-size="64" fill="${A.ink}">${esc(s.title)}</text>`
+  + (s.sub ? `<text class="sfit" data-max="880" x="500" y="${y+50}" text-anchor="middle" font-family="${SANS}" font-weight="400" font-size="24" fill="${A.sub}">${esc(s.sub)}</text>` : '');
+const ACOL = [A.pink, A.sky, A.yellow, A.green, A.apricot, A.lilac];
+const arow = (y, n, t, d, c) => wc(`<circle cx="150" cy="${y}" r="34" fill="{c}"/>`, c, .85, .5)
+  + `<text x="150" y="${y+12}" text-anchor="middle" font-family="${SERIF}" font-weight="700" font-size="34" fill="${A.ink}">${esc(n)}</text>`
+  + `<text class="sfit" data-max="760" x="210" y="${y-2}" font-family="${SANS}" font-weight="800" font-size="31" fill="${A.ink}">${esc(t)}</text>`
+  + (d ? `<text class="sfit" data-max="760" x="210" y="${y+34}" font-family="${SANS}" font-weight="400" font-size="22" fill="${A.sub}">${esc(d)}</text>` : '');
+const AR = {
+  list(s){ const L = arr(s.items,4); const step = L.length<=3 ? 120 : 104; const y0 = L.length<=3 ? 600 : 578;
+    return apage(atitle(s) + heroOf(s.hero) + `<line x1="110" y1="500" x2="890" y2="500" stroke="#E3D3C1" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>`
+      + L.map((it,i)=>arow(y0+i*step, String(i+1), it[0], it[1], ACOL[i%ACOL.length])).join('')); },
+  check(s){ const L = arr(s.items,6); const step = L.length>5 ? 62 : 72; const y0 = 560 + Math.round((880 - 560 - (L.length-1)*step)/2);
+    return apage(atitle(s) + `<g transform="translate(150,104) scale(.7)">${heroOf(s.hero)}</g>`
+      + `<line x1="110" y1="500" x2="890" y2="500" stroke="#E3D3C1" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>`
+      + L.map((t,i)=>{ const y = y0+i*step; return wc(`<circle cx="190" cy="${y}" r="24" fill="{c}"/>`, ACOL[i%ACOL.length], .85, .5) + ink(`M178 ${y} l9 9 l17 -19`, 3.4)
+        + `<text class="sfit" data-max="640" x="240" y="${y+11}" font-family="${SANS}" font-weight="700" font-size="30" fill="${A.ink}">${esc(t)}</text>`; }).join('')
+      + (s.note ? `<text class="sfit" data-max="860" x="500" y="950" text-anchor="middle" font-family="${SANS}" font-weight="400" font-size="22" fill="${A.sub}">${esc(s.note)}</text>` : '')); },
+  info(s){ return apage(atitle(s) + `<g transform="translate(0,40)">${heroOf(s.hero)}</g>`
+      + wc('<ellipse cx="500" cy="680" rx="300" ry="78" fill="{c}"/>', A.yellow, .55, .25)
+      + `<text class="sfit" data-max="560" x="500" y="706" text-anchor="middle" font-family="${SERIF}" font-weight="900" font-size="76" fill="${A.ink}">${esc(s.big)}</text>`
+      + (s.desc ? `<text class="sfit" data-max="840" x="500" y="822" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="32" fill="${A.ink}">${esc(s.desc)}</text>` : '')
+      + (s.note ? `<text class="sfit" data-max="840" x="500" y="880" text-anchor="middle" font-family="${SANS}" font-weight="400" font-size="24" fill="${A.sub}">${esc(s.note)}</text>` : '')); },
+};
+
+/* ================= 그리기 + 글자 맞춤 ================= */
+function fitHtml(root){ let bad = []; root.querySelectorAll('.fit').forEach(el => { const min = +(el.dataset.min||16);
+  let fs = parseFloat(getComputedStyle(el).fontSize); const over = () => el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + fs*0.3;
+  let guard = 80; while (over() && fs > min && guard--) { fs -= 1; el.style.fontSize = fs + 'px'; }
+  if (over()) bad.push((el.textContent||'').slice(0,20)); }); return bad; }
+function fitSvg(root){ let bad = []; root.querySelectorAll('text.sfit').forEach(t => { const max = +t.dataset.max; let fs = parseFloat(t.getAttribute('font-size'));
+  let guard = 80; while (t.getComputedTextLength() > max && fs > 14 && guard--) { fs -= 1; t.setAttribute('font-size', fs); }
+  if (t.getComputedTextLength() > max) bad.push((t.textContent||'').slice(0,20)); }); return bad; }
+
+(async () => {
+  const st = document.getElementById('status');
+  try {
+    const raw = decodeURIComponent(location.hash.slice(1));
+    if (!raw) { st.textContent = 'STATUS_NO_DATA'; return; }
+    const s = JSON.parse(raw); const k = String(s.k||''); const [kit, type] = k.split('.');
+    let html;
+    if (kit === 'g' && G[type]) html = G[type](s);
+    else if (kit === 'y' && Y[type]) html = `<div class="y">${Y[type](s, YT[s.theme] || YT.sage)}</div>`;
+    else if (kit === 'a' && AR[type]) html = AR[type](s);
+    else if (kit === 'img' && s.src) html = `<div style="width:1000px;height:1000px;background:${esc(s.bg||'#fff')}"><img id="im" src="${esc(s.src)}" style="width:1000px;height:1000px;object-fit:${s.fit==='cover'?'cover':'contain'}"></div>`;
+    else { st.textContent = 'STATUS_ERROR unknown k=' + k; return; }
+    const card = document.getElementById('card'); card.innerHTML = html;
+    const text = (card.textContent || '') + '가';
+    const loads = [];
+    for (const w of [400,500,700,800,900]) loads.push(document.fonts.load(`${w} 40px "Noto Sans KR"`, text).catch(()=>{}));
+    for (const w of [700,900]) loads.push(document.fonts.load(`${w} 40px "Noto Serif KR"`, text).catch(()=>{}));
+    await Promise.all(loads); await document.fonts.ready;
+    const im = document.getElementById('im');
+    if (im) { await new Promise(r => { if (im.complete) r(); else { im.onload = r; im.onerror = r; } }); if (!im.naturalWidth) { st.textContent = 'STATUS_ERROR image not loaded'; return; } }
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const bad = fitHtml(card).concat(fitSvg(card));
+    const web = document.fonts.check('900 40px "Noto Sans KR"', '가');
+    st.textContent = (bad.length ? 'STATUS_OVERFLOW ' + bad.join(' / ') : 'STATUS_OK') + ` k=${k} webfont=${web ? 'yes' : 'no'} title=${(s.title||s.name||'').slice(0,30)}`;
+  } catch (e) { st.textContent = 'STATUS_ERROR ' + e; }
+})();
+</script></body></html>

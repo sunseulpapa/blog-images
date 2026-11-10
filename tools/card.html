@@ -186,6 +186,21 @@ const Y = {
       return yframe(X,Yp,W,H,T,yperson(X+W/2, Yp+H*0.2, sc, T),'sz'+i) + `<text x="${X+W/2}" y="${base+56}" text-anchor="middle" font-family="${SANS}" font-weight="900" font-size="32" fill="${T.ink}">${esc(z.label)}</text>
       <text class="sfit" data-max="${Math.max(W+gap-10,150)}" x="${X+W/2}" y="${base+98}" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="25" fill="${T.ink}" opacity=".8">${esc(z.use)}</text>`; }).join('')}
       <text x="500" y="890" text-anchor="middle" font-family="${SANS}" font-weight="500" font-size="22" fill="${T.ink}" opacity=".7">실제 크기 비율대로 그렸어요</text>${yfoot(T)}</svg>`; },
+  list(s,T){ const L = arr(s.rows,5); const step = L.length>4 ? 104 : 118; const y0 = 300 + Math.round((640 - (L.length-1)*step - 80)/2);
+    return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}
+      ${L.map((r,i)=>{ const y = y0 + i*step; return `<rect x="80" y="${y-46}" width="840" height="92" rx="46" fill="#fff"/>
+        <rect x="92" y="${y-34}" width="260" height="68" rx="34" fill="${T.ink}"/>
+        <text class="sfit" data-max="230" x="222" y="${y+10}" text-anchor="middle" font-family="${SANS}" font-weight="800" font-size="28" fill="${T.b1}">${esc(r[0])}</text>
+        <text class="sfit" data-max="520" x="380" y="${y+11}" font-family="${SANS}" font-weight="800" font-size="30" fill="${T.ink}">${esc(r[1])}</text>`; }).join('')}
+      ${s.note?`<text class="sfit" data-max="860" x="500" y="${y0 + L.length*step + 10}" text-anchor="middle" font-family="${SANS}" font-weight="700" font-size="25" fill="${T.ink}" opacity=".85">${esc(s.note)}</text>`:''}
+      ${ychips(s.chips, 800, T)}${yfoot(T)}</svg>`; },
+  big(s,T){ const inner = yperson(220, 330, 0.62, T);
+    return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}${yframe(130,290,180,232,T,inner,'fb')}
+      <rect x="350" y="290" width="520" height="232" rx="28" fill="#fff"/>
+      <text class="sfit" data-max="470" x="610" y="425" text-anchor="middle" font-family="${SANS}" font-weight="900" font-size="84" fill="${T.ink}" letter-spacing="-2">${esc(s.big)}</text>
+      ${s.desc?`<text class="sfit" data-max="840" x="500" y="625" text-anchor="middle" font-family="${SANS}" font-weight="800" font-size="34" fill="${T.ink}">${esc(s.desc)}</text>`:''}
+      ${s.note?`<text class="sfit" data-max="840" x="500" y="685" text-anchor="middle" font-family="${SANS}" font-weight="500" font-size="26" fill="${T.ink}" opacity=".8">${esc(s.note)}</text>`:''}
+      ${ychips(s.chips, 800, T)}${yfoot(T)}</svg>`; },
   check(s,T){ const L = arr(s.items,5); const inner = yperson(240, 300, 0.78, T);
     return `<svg width="1000" height="1000">${ybg(T)}${yhead(s,T)}${yframe(130,250,220,290,T,inner,'fc')}
       ${L.map((t,i)=>`<g transform="translate(400,${290+i*104})"><rect x="0" y="-38" width="520" height="80" rx="40" fill="#fff"/><rect x="22" y="-20" width="40" height="40" rx="10" fill="${T.chip}" stroke="${T.ink}" stroke-width="3"/><path d="M30 0 l8 8 l16 -18" fill="none" stroke="${T.ink}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text class="sfit" data-max="420" x="80" y="10" font-family="${SANS}" font-weight="800" font-size="28" fill="${T.ink}">${esc(t)}</text></g>`).join('')}
@@ -317,7 +332,7 @@ function fitSvg(root){ let bad = []; root.querySelectorAll('text.sfit').forEach(
 (async () => {
   const st = document.getElementById('status');
   try {
-    const raw = decodeURIComponent(location.hash.slice(1));
+    const raw = decodeURIComponent(location.hash.slice(1).replace(/%(?![0-9A-Fa-f]{2})/g, '%25'));
     if (!raw) { st.textContent = 'STATUS_NO_DATA'; return; }
     const s = JSON.parse(raw); const k = String(s.k||''); const [kit, type] = k.split('.');
     let html;

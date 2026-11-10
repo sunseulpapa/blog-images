@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>card renderer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Noto+Serif+KR:wght@400;700;900&display=block" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#fff}
+#card{width:1000px;height:1000px;overflow:hidden;position:relative}
+#status{position:absolute;top:1100px;left:0;font:16px monospace}
+</style></head>
+<body><div id="card"></div><div id="status">STATUS_LOADING</div>
+<script>
+/* 사용법: render.html#<카드 HTML을 raw deflate로 압축해 base64url로 바꾼 값>
+   카드 HTML은 1000x1000 하나. 'Noto Sans CJK KR'/'Noto Serif CJK KR'은 웹폰트 Noto Sans KR/Noto Serif KR로 바뀐다. */
+(async () => {
+  const st = document.getElementById('status');
+  try {
+    let h = location.hash.slice(1);
+    if (!h) { st.textContent = 'STATUS_NO_DATA'; return; }
+    h = h.replace(/-/g, '+').replace(/_/g, '/');
+    while (h.length % 4) h += '=';
+    const bin = Uint8Array.from(atob(h), c => c.charCodeAt(0));
+    const txt = await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+    const html = txt.replaceAll('Noto Sans CJK KR', 'Noto Sans KR').replaceAll('Noto Serif CJK KR', 'Noto Serif KR');
+    const card = document.getElementById('card');
+    card.innerHTML = html;
+    const text = card.textContent || '가';
+    const loads = [];
+    for (const w of [400, 500, 700, 800, 900]) loads.push(document.fonts.load(`${w} 40px "Noto Sans KR"`, text));
+    for (const w of [400, 700, 900]) loads.push(document.fonts.load(`${w} 40px "Noto Serif KR"`, text));
+    await Promise.all(loads);
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await document.fonts.ready;
+    const ok = document.fonts.check('900 40px "Noto Sans KR"', text.slice(0, 50));
+    st.textContent = (ok ? 'STATUS_FONTS_OK' : 'STATUS_FONTS_FAIL') + ' chars=' + text.length;
+  } catch (e) { st.textContent = 'STATUS_ERROR ' + e; }
+})();
+</script></body></html>
